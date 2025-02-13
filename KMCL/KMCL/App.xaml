@@ -7,10 +7,14 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <materialDesign:BundledTheme BaseTheme="Light" PrimaryColor="Indigo" SecondaryColor="Lime" />
+                <materialDesign:BundledTheme BaseTheme="Light" PrimaryColor="Indigo" SecondaryColor="LightBlue" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign3.Defaults.xaml" />
 
             </ResourceDictionary.MergedDictionaries>
+
+            <!-- 设置全局字体资源命名空间 引用：{StaticResource NotoSansSC} -->
+            <FontFamily x:Key="NotoSansSC">pack://application:,,,/KMCL;component/resources/fonts/#Noto Sans SC</FontFamily>
+            
         </ResourceDictionary>
     </Application.Resources>
 </Application>

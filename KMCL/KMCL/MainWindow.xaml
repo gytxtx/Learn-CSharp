@@ -3,22 +3,42 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        
+        xmlns:local="clr-namespace:KMCL"
+        mc:Ignorable="d"
+
+        Title="KMCL MainWindow" Height="450" Width="800"
+
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         Style="{StaticResource MaterialDesignWindow}"
 
+        FontFamily="{StaticResource NotoSansSC}"
         
-        xmlns:local="clr-namespace:KMCL"
-        mc:Ignorable="d"
-        Title="KMCL MainWindow" Height="450" Width="800">
+        TextOptions.TextFormattingMode="Ideal" 
+        TextOptions.TextRenderingMode="Auto"        
+        Background="{DynamicResource MaterialDesignPaper}"
+        >
+
+    <!-- 不推荐使用的 -->
+    <!-- 
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextElement.FontFamily="pack://application:,,,/KMCL;component/resources/fonts/#Noto Sans SC"
+
+        FontFamily="pack://application:,,,/KMCL;component/resources/fonts/#Noto Sans SC"
+    -->
+
+    <!-- FontFamily="{DynamicResource MaterialDesignFont}" -->
     <!-- FontFamily="{materialDesign:MaterialDesignFont}" -->
     <!-- FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto" -->
+
     <Window.Resources>
         <!-- BooleanToVisibilityConverter -->
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
 
         <!-- SolidColorBrushOpacityConverter -->
         <local:SolidColorBrushOpacityConverter x:Key="SolidColorBrushOpacityConverter" />
+
     </Window.Resources>
 
     <Grid>
@@ -88,7 +108,7 @@
 
                 <!-- 标题区域 -->
                 <StackPanel Orientation="Horizontal" Grid.Column="1">
-                    <TextBlock Text="What the hell??"
+                    <TextBlock Text="Material Design Demo App"
                                Style="{StaticResource MaterialDesignHeadline6TextBlock}"
                                HorizontalAlignment="Left"
                                VerticalAlignment="Center" />
@@ -113,10 +133,22 @@
             </Grid>
         </materialDesign:ColorZone>
 
-        <Button
-            Content="ButtonW"
-            IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
-            Style="{StaticResource MaterialDesignRaisedSecondaryButton}"
-            ToolTip="Resource name: MaterialDesignRaisedSecondaryButton" Margin="32,90,0,0" HorizontalAlignment="Left" Width="120" Height="32" VerticalAlignment="Top" />
+        <StackPanel>
+            <materialDesign:Card Padding="32" Margin="16,80,0,0">
+                <Grid Height="180">
+                    <TextBlock Style="{DynamicResource MaterialDesignHeadline6TextBlock}" Margin="0,0,0,147">My First Material Design App</TextBlock>
+
+                    <Button
+                    Content="弹出 “Hello, World!”"
+                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                    Style="{StaticResource MaterialDesignRaisedSecondaryButton}"
+                    ToolTip="Resource name: MaterialDesignRaisedSecondaryButton" Margin="0,50,0,0" HorizontalAlignment="Left" Width="172" Height="32" VerticalAlignment="Top" Click="Button_Click" />
+                    <materialDesign:Snackbar
+                        x:Name="SnackbarThree"
+                        MessageQueue="{materialDesign:MessageQueue}" />
+                </Grid>
+            </materialDesign:Card>
+
+        </StackPanel>
     </Grid>
 </Window>

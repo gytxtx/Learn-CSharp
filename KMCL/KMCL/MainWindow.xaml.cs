@@ -33,6 +33,17 @@ namespace KMCL
             // 这里写你的导航栏切换逻辑
             MessageBox.Show("导航栏按钮被点击");
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (SnackbarThree.MessageQueue is { } messageQueue)
+            {
+                // Use the message queue to send a message.
+                var message = "Hello, World!";
+                // The message queue can be called from any thread.
+                Task.Factory.StartNew(() => messageQueue.Enqueue(message));
+            }
+        }
     }
 
 }
