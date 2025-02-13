@@ -134,11 +134,11 @@
         </materialDesign:ColorZone>
 
         <StackPanel>
-            <materialDesign:Card Padding="32" Margin="16,80,0,0">
-                <Grid Height="180">
-                    <TextBlock Style="{DynamicResource MaterialDesignHeadline6TextBlock}" Margin="0,0,0,147">My First Material Design App</TextBlock>
+            <materialDesign:Card Padding="32" Margin="16,80,16,0" Height="310">
+                <Grid Margin="16,16,16,16">
+                    <TextBlock Style="{DynamicResource MaterialDesignHeadline6TextBlock}" Height="32" VerticalAlignment="Top">My First Material Design App</TextBlock>
 
-                    <Button
+                    <Button x:Name="TestButton"
                     Content="弹出 “Hello, World!”"
                     IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                     Style="{StaticResource MaterialDesignRaisedSecondaryButton}"
