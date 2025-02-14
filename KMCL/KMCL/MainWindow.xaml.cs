@@ -19,6 +19,11 @@ namespace KMCL
         public MainWindow()
         {
             InitializeComponent();
+
+            Window_Test Window_Test = new Window_Test();
+
+            Window_Test.Show();
+
         }
         // 处理 "返回" 按钮的点击事件
         private void ButtonGoBack_OnClick(object sender, RoutedEventArgs e)
