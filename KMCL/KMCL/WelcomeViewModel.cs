@@ -22,18 +22,10 @@ public class WelcomeViewModel : ObservableRecipient
     private DateTime _singleWeekStartTime = DateTime.Now;
 
 
-    // 从 Guid 改为 string 类型
-    private string _dialogId = Guid.NewGuid().ToString();
-    public string DialogId
+    public Guid DialogId
     {
-        get => _dialogId;
-        set => SetProperty(ref _dialogId, value);
-    }
-
-    // public Guid DialogId
-    // {
-    //    get;
-    // } = Guid.NewGuid();
+       get;
+    } = Guid.NewGuid();
 
     public int MasterTabIndex
     {
