@@ -6,10 +6,11 @@
     xmlns:local="clr-namespace:KMCL"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    Title="Window_Test"
+    Title="KMCL 设置向导"
     Width="800"
     Height="450"
     Background="White"
+    Closing="Window_Closing"
     FontFamily="{StaticResource NotoSansSC}"
     Style="{StaticResource MaterialDesignWindow}"
     TextOptions.TextFormattingMode="Ideal"
@@ -22,175 +23,232 @@
         <!--  SolidColorBrushOpacityConverter  -->
         <local:SolidColorBrushOpacityConverter x:Key="SolidColorBrushOpacityConverter" />
 
+        <!--  退出确认  -->
+        <StackPanel
+            x:Key="ExitAppConfirmDialog"
+            MaxWidth="400"
+            Margin="16"
+            VerticalAlignment="Stretch">
+            <TextBlock Style="{StaticResource MaterialDesignHeadline6TextBlock}">
+                <Run Text="退出应用" />
+            </TextBlock>
+            <TextBlock Margin="0,6,0,0" TextWrapping="Wrap">
+                <Run Text="您需要完成设置才能开始使用本应用。关闭此窗口将直接退出应用。" />
+            </TextBlock>
+            <StackPanel
+                Margin="0,8,0,0"
+                HorizontalAlignment="Right"
+                Orientation="Horizontal">
+                <Button
+                    HorizontalAlignment="Right"
+                    Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                    Content="退出"
+                    IsDefault="True"
+                    Style="{DynamicResource MaterialDesignFlatButton}">
+                    <Button.CommandParameter>
+                        <system:Boolean xmlns:system="clr-namespace:System;assembly=mscorlib">
+                            True
+                        </system:Boolean>
+                    </Button.CommandParameter>
+                </Button>
+                <Button
+                    Margin="6,0,0,0"
+                    HorizontalAlignment="Right"
+                    Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                    Content="取消"
+                    Style="{DynamicResource MaterialDesignFlatButton}">
+                    <Button.CommandParameter>
+                        <system:Boolean xmlns:system="clr-namespace:System;assembly=mscorlib">
+                            False
+                        </system:Boolean>
+                    </Button.CommandParameter>
+                </Button>
+            </StackPanel>
+        </StackPanel>
     </Window.Resources>
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="79*" />
-            <ColumnDefinition />
-            <ColumnDefinition Width="80*" />
-        </Grid.ColumnDefinitions>
-        <!--  主体内容区域  -->
-        <Grid
-            Margin="32,0,0,16"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Bottom"
-            Opacity="0.75">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
-            <materialDesign:PackIcon
-                Grid.Column="0"
-                VerticalAlignment="Center"
-                Kind="BulbOnOutline" />
-            <TextBlock
-                Grid.Column="1"
-                Margin="4,0,0,0"
-                VerticalAlignment="Center"
-                FontWeight="Regular"
-                Text="{Binding ViewModel.CurrentEchoCaveText}"
-                TextWrapping="Wrap" />
-        </Grid>
 
-        <!--  Frame 内容区域  -->
-        <Frame
-            x:Name="NavigationFrame"
-            Grid.ColumnSpan="3"
-            Margin="0,61,0,0"
-            Background="White"
-            Content="{Binding ViewModel.FrameContent}"
-            NavigationUIVisibility="Hidden"
-            RenderTransformOrigin="0.5,0.5">
-            <Frame.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform />
-                    <SkewTransform />
-                    <RotateTransform />
-                    <TranslateTransform X="0" />
-                </TransformGroup>
-            </Frame.RenderTransform>
-        </Frame>
-
-        <!--  顶部工具栏区域  -->
-        <materialDesign:ColorZone
-            Grid.Row="0"
-            Grid.Column="0"
-            Grid.ColumnSpan="3"
-            Padding="16"
-            materialDesign:ElevationAssist.Elevation="Dp4"
-            Mode="PrimaryMid">
-            <Grid Margin="4,0,4,0">
+    <Grid TextElement.Foreground="{DynamicResource MaterialDesignBody}">
+        <materialDesign:DialogHost Foreground="{DynamicResource MaterialDesignBody}" Identifier="{Binding DialogId}">
+            <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="79*" />
                     <ColumnDefinition />
+                    <ColumnDefinition Width="80*" />
                 </Grid.ColumnDefinitions>
-
-                <!--  左侧按钮区域  -->
-                <StackPanel
-                    Grid.Column="0"
-                    Margin="0,-16"
-                    VerticalAlignment="Center"
-                    Orientation="Horizontal">
-                    <Button
-                        Margin="0,0,16,0"
-                        Padding="0"
+                <!--  主体内容区域  -->
+                <Grid
+                    Margin="32,0,0,16"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Bottom"
+                    Opacity="0.75">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <materialDesign:PackIcon
+                        Grid.Column="0"
                         VerticalAlignment="Center"
-                        Content="{materialDesign:PackIcon ArrowLeft,
-                                                          Size=24}"
-                        Style="{StaticResource MaterialDesignToolForegroundButton}"
-                        ToolTip="返回"
-                        Visibility="{Binding ViewModel.CanGoBack, Converter={StaticResource BooleanToVisibilityConverter}}" />
-                    <Button
-                        Margin="0,0,16,0"
-                        Padding="0"
-                        VerticalAlignment="Center"
-                        Content="{materialDesign:PackIcon Menu,
-                                                          Size=24}"
-                        Style="{StaticResource MaterialDesignToolForegroundButton}"
-                        ToolTip="导航栏"
-                        Visibility="{Binding ViewModel.IsViewCompressed, Converter={StaticResource BooleanToVisibilityConverter}}" />
-                </StackPanel>
-
-                <!--  标题区域  -->
-                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                        Kind="BulbOnOutline" />
                     <TextBlock
-                        HorizontalAlignment="Left"
+                        Grid.Column="1"
+                        Margin="4,0,0,0"
                         VerticalAlignment="Center"
-                        Style="{StaticResource MaterialDesignHeadline6TextBlock}"
-                        Text="Material Design Demo App" />
-                </StackPanel>
-            </Grid>
-        </materialDesign:ColorZone>
+                        FontWeight="Regular"
+                        Text="{Binding ViewModel.CurrentEchoCaveText}"
+                        TextWrapping="Wrap" />
+                </Grid>
 
+                <!--  Frame 内容区域  -->
+                <Frame
+                    x:Name="NavigationFrame"
+                    Grid.ColumnSpan="3"
+                    Margin="0,61,0,0"
+                    Background="White"
+                    Content="{Binding ViewModel.FrameContent}"
+                    NavigationUIVisibility="Hidden"
+                    RenderTransformOrigin="0.5,0.5">
+                    <Frame.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform />
+                            <SkewTransform />
+                            <RotateTransform />
+                            <TranslateTransform X="0" />
+                        </TransformGroup>
+                    </Frame.RenderTransform>
+                </Frame>
 
-        <StackPanel Grid.ColumnSpan="3" Margin="0,65,0,0">
-            <StackPanel Margin="32,32,32,32">
-                <TextBlock
-                    FontWeight="SemiBold"
-                    Style="{StaticResource MaterialDesignHeadline5TextBlock}"
-                    Text="欢迎使用 ClassIsland" />
-                <TextBlock
-                    Margin="0,6,0,0"
-                    FontWeight="Regular"
-                    Text="本向导将引导您完成ClassIsland的设置，只需几步，即可完成ClassIsland的基本设置。点击【下一步】以开始设置。"
-                    TextWrapping="Wrap" />
-                <CheckBox Margin="0,12,0,0" IsChecked="{Binding ViewModel.IsLicenseAgreed}">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock
-                            VerticalAlignment="Center"
-                            FontWeight="Regular"
-                            Text="我已阅读并同意" />
-                        <Button
-                            Padding="0"
-                            VerticalAlignment="Center"
-                            Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
-                            CommandParameter="{StaticResource MaterialDesignFlatButton}"
-                            Content="《ClassIsland 开源许可》"
-                            FontWeight="Medium"
-                            Style="{StaticResource MaterialDesignFlatButton}" />
-                        <TextBlock VerticalAlignment="Center" Text="和" />
-                        <Button
-                            Padding="0"
-                            VerticalAlignment="Center"
-                            Content="《ClassIsland 隐私政策》"
-                            FontWeight="Medium"
-                            Style="{StaticResource MaterialDesignFlatButton}" />
-                        <TextBlock VerticalAlignment="Center" Text="。" />
-                    </StackPanel>
-                </CheckBox>
-
+                <!--  顶部工具栏区域  -->
                 <materialDesign:ColorZone
-                    Margin="0,0,0,4"
-                    Panel.ZIndex="1"
-                    Background="#D6292B">
-                    <StackPanel Margin="8,4">
-                        <DockPanel>
-                            <materialDesign:PackIcon
-                                Width="20"
-                                Height="20"
-                                Foreground="White"
-                                Kind="AlertOutline" />
-                            <TextBlock
-                                Margin="4,0,0,0"
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="3"
+                    Padding="16"
+                    materialDesign:ElevationAssist.Elevation="Dp4"
+                    Mode="PrimaryMid">
+                    <Grid Margin="4,0,4,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+
+                        <!--  左侧按钮区域  -->
+                        <StackPanel
+                            Grid.Column="0"
+                            Margin="0,-16"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                            <Button
+                                Margin="0,0,16,0"
+                                Padding="0"
                                 VerticalAlignment="Center"
-                                TextWrapping="Wrap"><Run
-                                    FontWeight="Medium"
-                                    Foreground="White"
-                                    Text="ClassIsland 是开源免费的软件，官方没有提供任何形式的付费支持服务，源代码仓库地址在" /><Run Text=" " /><Hyperlink CommandParameter="https://github.com/ClassIsland/ClassIsland/">
-                                    <Run
-                                        FontWeight="Medium"
-                                        Foreground="White"
-                                        Text="https://github.com/ClassIsland/ClassIsland/" />
-                                </Hyperlink><Run Text=" " /><Run
-                                    FontWeight="Medium"
-                                    Foreground="White"
-                                    Text="。如果您通过有偿协助等付费方式取得本应用，在遇到问题时请在与卖家约定的服务框架下，优先向卖家求助。如果卖家没有提供您预期的服务，请退款或通过其它形式积极维护您的合法权益。" /></TextBlock>
-                        </DockPanel>
-                    </StackPanel>
+                                Content="{materialDesign:PackIcon ArrowLeft,
+                                                                  Size=24}"
+                                Style="{StaticResource MaterialDesignToolForegroundButton}"
+                                ToolTip="返回"
+                                Visibility="{Binding ViewModel.CanGoBack, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                            <Button
+                                Margin="0,0,16,0"
+                                Padding="0"
+                                VerticalAlignment="Center"
+                                Content="{materialDesign:PackIcon Menu,
+                                                                  Size=24}"
+                                Style="{StaticResource MaterialDesignToolForegroundButton}"
+                                ToolTip="导航栏"
+                                Visibility="{Binding ViewModel.IsViewCompressed, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                        </StackPanel>
+
+                        <!--  标题区域  -->
+                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                            <TextBlock
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                                Text="KMCL 设置向导" />
+                        </StackPanel>
+                    </Grid>
                 </materialDesign:ColorZone>
 
-                <materialDesign:ColorZone
+
+                <StackPanel Grid.ColumnSpan="3" Margin="0,65,0,0">
+                    <StackPanel Margin="32,32,32,32">
+                        <TextBlock
+                            FontWeight="SemiBold"
+                            Style="{StaticResource MaterialDesignHeadline5TextBlock}"
+                            Text="欢迎使用 KMCL 启动器" />
+                        <TextBlock
+                            Margin="0,6,0,0"
+                            FontWeight="Regular"
+                            Text="本向导将引导您完成 KMCL 的设置，只需几步，即可完成 KMCL 的基本设置。单击“下一步”以开始设置。"
+                            TextWrapping="Wrap" />
+                        <CheckBox Margin="0,12,0,0" IsChecked="{Binding ViewModel.IsLicenseAgreed}">
+                            <StackPanel Orientation="Horizontal">
+
+                                <TextBlock VerticalAlignment="Center" FontWeight="Regular">
+                                    <Run Text="我已阅读并同意" />
+
+                                    <Run Text=" " />
+                                    <Hyperlink CommandParameter="https://www.minecraft.net/eula/">
+                                        <Run
+                                            FontWeight="Medium"
+                                            Foreground="#00469a"
+                                            Text="Minecraft EULA" />
+                                    </Hyperlink>
+                                    <Run Text=" " />
+
+                                    <Run Text="和" />
+
+                                    <Run Text=" " />
+                                    <Hyperlink CommandParameter="about:blank">
+                                        <Run
+                                            FontWeight="Medium"
+                                            Foreground="#00469a"
+                                            Text="KMCL 用户协议" />
+                                    </Hyperlink>
+                                    <Run Text=" " />
+
+                                    <Run Text="。" />
+                                </TextBlock>
+                            </StackPanel>
+                        </CheckBox>
+
+                        <materialDesign:ColorZone
+                            Margin="0,16,0,8"
+                            Panel.ZIndex="1"
+                            Background="#D6292B">
+                            <StackPanel Margin="8,4">
+                                <DockPanel>
+                                    <materialDesign:PackIcon
+                                        Width="20"
+                                        Height="20"
+                                        Foreground="White"
+                                        Kind="AlertOutline" />
+                                    <TextBlock
+                                        Margin="4,0,0,0"
+                                        VerticalAlignment="Center"
+                                        TextWrapping="Wrap"><Run
+                                            FontWeight="Medium"
+                                            Foreground="White"
+                                            Text="KMCL 是免费开源的软件，官方没有提供任何形式的付费支持服务，源代码仓库地址在" />
+
+                                        <Run Text=" " />
+                                        <Hyperlink CommandParameter="https://example.com/">
+                                            <Run
+                                                FontWeight="Medium"
+                                                Foreground="White"
+                                                Text="https://example.com/" />
+                                        </Hyperlink>
+                                        <Run Text=" " />
+
+                                        <Run
+                                            FontWeight="Medium"
+                                            Foreground="White"
+                                            Text="。如果您通过有偿协助等付费方式取得本应用，在遇到问题时请在与卖家约定的服务框架下，优先向卖家求助。如果卖家没有提供您预期的服务，请退款或通过其它形式积极维护您的合法权益。" /></TextBlock>
+                                </DockPanel>
+                            </StackPanel>
+                        </materialDesign:ColorZone>
+
+                        <!--<materialDesign:ColorZone
                     Margin="0,0,0,4"
                     Panel.ZIndex="1"
                     materialDesign:CornerRadius="3"
@@ -225,8 +283,10 @@
                             </TextBlock>
                         </DockPanel>
                     </StackPanel>
-                </materialDesign:ColorZone>
-            </StackPanel>
-        </StackPanel>
+                </materialDesign:ColorZone>-->
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+        </materialDesign:DialogHost>
     </Grid>
 </Window>

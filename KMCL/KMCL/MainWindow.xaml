@@ -158,8 +158,8 @@
         </materialDesign:ColorZone>
 
         <StackPanel Grid.ColumnSpan="3" Margin="0,65,0,0">
-            <materialDesign:Card Margin="16,16,16,16" Padding="32">
-                <Grid Height="257" Margin="16,16,16,16">
+            <materialDesign:Card Margin="16,16,16,16">
+                <Grid Height="257" Margin="32,32,32,32">
                     <TextBlock
                         Height="32"
                         VerticalAlignment="Top"
